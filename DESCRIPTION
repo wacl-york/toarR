@@ -8,3 +8,11 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Imports: 
+    dplyr,
+    janitor,
+    purrr,
+    rvest,
+    stringr,
+    tibble,
+    tidyr
