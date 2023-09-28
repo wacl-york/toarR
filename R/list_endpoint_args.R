@@ -13,13 +13,13 @@ list_endpoint_args = function(endpoint){
     endpoint = "controlled-vocabulary"
   }
 
-  avalibleEndpoints = c("stationmeta","timeseries","search")
+  argumentEndpoints = c("stationmeta","timeseries","search")
   descriptionEndpoints = c("data","variables","controlled-vocabulary")
 
-  if(!endpoint %in% c(avalibleEndpoints,descriptionEndpoints)){
+  if(!endpoint %in% c(argumentEndpoints,descriptionEndpoints)){
     stop(paste0("Arguments/description for ",endpoint," could not be obtained.\n",
                "Argument lists are avaliable for ",
-               paste0(avalibleEndpoints, collapse = ", "),".\n",
+               paste0(argumentEndpoints, collapse = ", "),".\n",
                "Descriptions are avalible for ",
                paste0(descriptionEndpoints,collapse = ", "),".\n",
                "Check the API docs at ",get_base_url(),"for more details."))
@@ -29,7 +29,7 @@ list_endpoint_args = function(endpoint){
 
   divs = rvest::html_elements(sess, "div")
 
-  if(endpoint %in% avalibleEndpoints){
+  if(endpoint %in% argumentEndpoints){
 
     if(endpoint == "search"){
 
@@ -37,8 +37,8 @@ list_endpoint_args = function(endpoint){
       ts = list_endpoint_args("timeseries")
 
       endpointArgs = bind_rows(stn,ts) |>
-        distinct() |>
-        filter(Name != "id") |>
+        dplyr::distinct() |>
+        dplyr::filter(Name != "id") |>
         janitor::clean_names()
       # id does not apply to the search endpoint as it is a cross reference of # stationmeta and timeseries
 
@@ -54,11 +54,11 @@ list_endpoint_args = function(endpoint){
   }
 
   if(endpoint %in% descriptionEndpoints){
-    endpointDesc = tibble(description = divs[which(rvest::html_attr(divs,"id") == endpoint)] |>
-                            rvest::html_text2() |>
-                            stringr::str_split("\n") |>
-                            purrr::pluck(1)) |>
-      filter(description != "")
+    endpointDesc = tibble::tibble(description = divs[which(rvest::html_attr(divs,"id") == endpoint)] |>
+                                    rvest::html_text2() |>
+                                    stringr::str_split("\n") |>
+                                    purrr::pluck(1)) |>
+      dplyr::filter(description != "")
 
     return(endpointDesc)
 
