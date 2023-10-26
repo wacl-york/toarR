@@ -21,13 +21,17 @@ build_query = function(endpoint, ..., base_url = get_base_url()){
                     "API arguments with multiple values should be supplied as a vector of strings"))
       }
 
-      if("POSIXt" %in% class(args[[i]])){ # check for timestamps and format
-        if("POSIXct" %in% class(args[[i]])){ # format POSIXct types
-          args[[i]] = formatDate(args[[i]])
-        }else{
-          stop("Dates should be supplied as POSIXct not ",class(args[[i]])[1])
-        }
+      if(names(args)[i] %in% c("data_start_date","data_end_date")){
+        args[[i]] = formatDate(args[[i]])
       }
+
+      # if("POSIXt" %in% class(args[[i]])){ # check for timestamps and format
+      #   if("POSIXct" %in% class(args[[i]])){ # format POSIXct types
+      #     args[[i]] = formatDate(args[[i]])
+      #   }else{
+      #     stop("Dates should be supplied as POSIXct not ",class(args[[i]])[1])
+      #   }
+      # }
 
       args[[i]] = as.character(args[[i]])
 
