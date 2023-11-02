@@ -1,20 +1,3 @@
-# Environment for storing the various tables that are scraped from the API docs.
-# On first run of list_endpoints() or list_endpoint_args() (or when force = TRUE)
-# the API docs are scraped for this information. For all other subsequent calls
-# in this session the cached value is used. This substantially speeds up build_query()
-# as it uses the endpoint argument tables to check for valid arguments.
-
-the = new.env(parent = emptyenv())
-
-the$endpointList = NULL
-the$endpointStationmetaArgs = NULL
-the$endpointTimeseriesArgs = NULL
-the$endpointSearchArgs = NULL
-the$endpointDataDesc = NULL
-the$endpointVariablesDesc = NULL
-the$endpointControlledVocabularyDesc = NULL
-the$controlledVocabulary = list()
-
 #' List Endpoints
 #'
 #' Returns a tibble containing names and brief descriptions of the TOAR REST API
@@ -208,7 +191,5 @@ list_controlled_vocabulary = function(controlledVocabulary = NULL, force = FALSE
   }else{
     return(the$controlledVocabulary[[controlledVocabulary]])
   }
-
-
-
 }
+
