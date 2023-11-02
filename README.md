@@ -6,7 +6,7 @@ Note: this is not an official TOAR project. It comes with absolutely no guarante
 
 ## Installation
 
-```         
+``` R
 devtools::install_github("wacl-york/toarR")
 ```
 
@@ -18,7 +18,7 @@ devtools::install_github("wacl-york/toarR")
 
 #### List the available endpoints:
 
-```         
+``` R     
 list_endpoints()
 ```
 
@@ -26,15 +26,13 @@ list_endpoints()
 
 -   When an endpoint has clearly defined arguments (i.e. appears as table on the API documentation), a tibble is created with this information:
 
-```         
-
+``` R       
 list_endpoint_args("stationmeta")
 ```
 
 -   When this is not the case, the description from the API docs is returned as a tibble of the lines:
 
-```         
-
+``` R       
 list_endpoint_args("variables")
 ```
 
@@ -42,11 +40,10 @@ list_endpoint_args("variables")
 
 Some of the fields that the TOAR database can be filtered by have more detailed requirements. These are described as controlled vocabulary and the information on these can be accessed as follows:
 
-```         
+``` R
 list_controlled_vocabulary() # returns a vector of the avalible controlled variables
 
 list_controlled_vocabulary("Station Type") # returns a tibble of the requested vocabulary
-
 ```
 
 Note: these requests are stored in a local environment after the first query, so there is less overhead if they are being used in code after the initial scraping.
@@ -55,7 +52,7 @@ Note: these requests are stored in a local environment after the first query, so
 
 Using these functions, one may discover the required arguments, and build a query as follows:
 
-```         
+``` R  
 library(toarR)
 library(purrr)
 library(stringr)
@@ -92,5 +89,4 @@ timeseriesOfInterest = timeseries |>
 toarDat = build_query("data",
                       id = timeseriesOfInterest$id) |> 
   query_toar_database()
-
 ```
