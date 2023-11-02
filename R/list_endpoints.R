@@ -33,6 +33,8 @@ the$controlledVocabulary = list()
 
 list_endpoints = function(force = FALSE){
 
+  name = NULL # bind unbound variable used in NSE
+
   if(is.null(the$endpointList) | force){
     sess = rvest::session(get_base_url())
 
@@ -102,6 +104,8 @@ list_endpoint_args = function(endpoint, force = FALSE){
 
   )
 
+  name = description = NULL # bind unbound variables used in NSE
+
   if(is.null(the[[envEndpointName]]) | force){
 
     sess = rvest::session(get_base_url())
@@ -158,17 +162,18 @@ list_endpoint_args = function(endpoint, force = FALSE){
 #' A description of the controlled vocabulary can be generated with \code{list_endpoint_args("controlled_vocabulary")}
 #' The response will be stored in the internal environment, which can be overridden with \code{force = TRUE}.
 #'
-#' @param controlled_vocabulary the name of the controlled vocabulary required.
+#' @param controlledVocabulary the name of the controlled vocabulary required.
 #' Note these are formatted with begining with each word starting with a capital and
 #' separated with a space. Arguments will be formatted as such using \code{stringr::str_to_title()}.
-#' They will then be formatted for the url via \code{utils:URLencode()}. string.
+#' They will then be formatted for the url via \code{utils:URLencode()}.
+#' If no controlled vocabulary is specified, a vector of valid options is instead returned. string.
 #'
 #' @param force force the function to re-scrape the API docs. boolean.
 #'
 #' @export
 #'
 
-list_controlled_vocabulary = function(controlledVocabulary, force = FALSE){
+list_controlled_vocabulary = function(controlledVocabulary = NULL, force = FALSE){
 
   # This is precarious.
   validControlledVocabulary = list_endpoint_args("controlled_vocabulary")
@@ -177,6 +182,11 @@ list_controlled_vocabulary = function(controlledVocabulary, force = FALSE){
   validControlledVocabulary = validControlledVocabulary$description[CVStart:CVEnd]
 
   controlled_vocabulary = stringr::str_to_title(controlledVocabulary)
+
+  if(is.null(controlledVocabulary)){
+    message("No controlled vocabulary specified. Returning vector of valid options")
+    return(validControlledVocabulary)
+  }
 
   if(!controlledVocabulary %in% validControlledVocabulary){
     stop(paste0("controlled_vocabulary must be one of: ",

@@ -4,15 +4,16 @@
 \alias{list_controlled_vocabulary}
 \title{List Controlled Controlled Vocabulary}
 \usage{
-list_controlled_vocabulary(controlledVocabulary, force = FALSE)
+list_controlled_vocabulary(controlledVocabulary = NULL, force = FALSE)
 }
 \arguments{
-\item{force}{force the function to re-scrape the API docs. boolean.}
-
-\item{controlled_vocabulary}{the name of the controlled vocabulary required.
+\item{controlledVocabulary}{the name of the controlled vocabulary required.
 Note these are formatted with begining with each word starting with a capital and
 separated with a space. Arguments will be formatted as such using \code{stringr::str_to_title()}.
-They will then be formatted for the url via \code{utils:URLencode()}. string.}
+They will then be formatted for the url via \code{utils:URLencode()}.
+If no controlled vocabulary is specified, a vector of valid options is instead returned. string.}
+
+\item{force}{force the function to re-scrape the API docs. boolean.}
 }
 \description{
 Provides the data table associated with the defined controlled Vocabulary.
